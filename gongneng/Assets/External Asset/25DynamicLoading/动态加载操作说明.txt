@@ -1,0 +1,22 @@
+动态加载的适用范围：
+1. 场景特别大，打出来的Web包大于100M（这个数字可商议）；
+2. 校园网比较慢。
+
+动态加载的意义在于：
+有时候包特别大会导致WebPlayer加载失败，尤其是老师的电脑可能配置不是很高，网又慢的情况下，加载失败，体验很差。
+
+动态加载的原理（以典型的首页+结构识别+场景操作为例说明）：
+1. 我们原则上只将第一个首页面打包（或者是首页面+结构展示）；
+2. 打开首页面的同时，开始加载主场景，当主场景还未加载完就点“开始实验”时，提示“正在准备资源，请稍后”；
+3. 加载完成后会有提示“加载成功”；
+4. 加载失败也会有提示“加载失败，请重试”；
+5. 资源加载完成后点击“开始实验”，则成功跳转。
+
+动态加载使用方法：
+1. 将本文件夹（25DynamicLoading）拷贝进自己的项目里；
+1. 定义场景路径CreateAssetBundle.cs里的CreateScene()方法；
+string[] Levels = { "Assets/External Asset/25DynamicLoading/Scene/" + selectedAsset[0].name + ".unity"};
+2. 打包：选中需要打包的场景（一次选一个），点击菜单栏里的“Custom Editor/Create Scene”（自定义菜单），打包成功会有提示，默认打包好的资源路径为：StreamingAssets/，特别需要注意的是因为打包的资源是Web端，所以你的项目平台要在Web端下才能打包成功，如果不是web端，会自动切到web端的；
+3. 动态加载：以Scene里面的场景为例说明
+LoadPanel上有一个脚本AssetBundleControl脚本，修改里面的NextSceneName变量为将要跳转的场景名称；
+4. 将跳转按钮的Click事件挂上方法AssetBundleControl里的ClickSwitchScene（）方法，结束。
